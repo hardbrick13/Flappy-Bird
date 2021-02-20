@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flappy_bird/barriers.dart';
 
-import 'main.dart';
 import 'package:flutter/material.dart';
 import 'bird.dart';
 
@@ -18,33 +17,30 @@ class _GameState extends State<Game> {
 
   bool gameHasStarted = false;
 
-  double barrierXone = 1;
-  double barrierXtwo = 3.5;
-  double barrierXthree = 6;
-  double barrierXfour = 8.5;
+  double barrierXone = 4;
+  double barrierXtwo = 6.5;
+  double barrierXthree = 12;
+  double barrierXfour = 14.5;
 
   final GlobalKey birdkey = GlobalKey();
+  final GlobalKey onetkey = GlobalKey();
+  final GlobalKey onebkey = GlobalKey();
+  final GlobalKey twotkey = GlobalKey();
+  final GlobalKey twobkey = GlobalKey();
+  final GlobalKey threetkey = GlobalKey();
+  final GlobalKey threebkey = GlobalKey();
+  final GlobalKey fourtkey = GlobalKey();
+  final GlobalKey fourbkey = GlobalKey();
+
+  int score = 0;
+  int bestScore = 10;
+
   Offset pos;
 
-  void getPosition(key) {
+  String getPosition(key) {
     RenderBox birdBox = key.currentContext.findRenderObject();
     pos = birdBox.localToGlobal(Offset.zero);
-    print(pos);
-  }
-
-  void jump() {
-    setState(() {
-      getPosition(birdkey);
-      time = 0;
-      initialHeight = birdYaxis;
-      if (initialHeight > 1 || initialHeight < -1) {
-        initState();
-        setState(() {
-          gameHasStarted = false;
-        });
-        birdYaxis = 0;
-      }
-    });
+    return (pos.toString());
   }
 
   void startGame() {
@@ -55,22 +51,22 @@ class _GameState extends State<Game> {
       setState(() {
         birdYaxis = initialHeight - height;
         if (barrierXone < -2) {
-          barrierXone += 10.5;
+          barrierXone += 13.5;
         } else {
           barrierXone -= 0.1;
         }
         if (barrierXtwo < -2) {
-          barrierXtwo += 10.5;
+          barrierXtwo += 13.5;
         } else {
           barrierXtwo -= 0.1;
         }
         if (barrierXthree < -2) {
-          barrierXthree += 10.5;
+          barrierXthree += 13.5;
         } else {
           barrierXthree -= 0.1;
         }
         if (barrierXfour < -2) {
-          barrierXfour += 10.5;
+          barrierXfour += 13.5;
         } else {
           barrierXfour -= 0.1;
         }
@@ -86,6 +82,36 @@ class _GameState extends State<Game> {
       }
     });
   }
+
+  void jump() {
+    String bird = getPosition(birdkey);
+    String onet = getPosition(onetkey);
+    String oneb = getPosition(onebkey);
+    String twot = getPosition(twotkey);
+    String twob = getPosition(twobkey);
+    String threet = getPosition(threetkey);
+    String threeb = getPosition(threebkey);
+    String fourt = getPosition(fourtkey);
+    String fourb = getPosition(fourbkey);
+    var keys = [onet, oneb, twot, twob, threet, threeb, fourt, fourb];
+    setState(() {
+      time = 0;
+      initialHeight = birdYaxis;
+      if (initialHeight > 1 || initialHeight < -1) {
+        setState(() {
+          gameHasStarted = false;
+        });
+        birdYaxis = 0;
+      }
+    });
+  }
+
+  void _showDialogue() {
+    showDialog(context: context,
+    builder: (BuildContext context)
+    )
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +136,7 @@ class _GameState extends State<Game> {
                     color: Colors.blue,
                     child: Container(child: Bird())),
                 AnimatedContainer(
+                  key: onetkey,
                   alignment: Alignment(barrierXone, -1.1),
                   duration: Duration(milliseconds: 0),
                   child: MyBarrier(
@@ -117,6 +144,7 @@ class _GameState extends State<Game> {
                   ),
                 ),
                 AnimatedContainer(
+                  key: onebkey,
                   alignment: Alignment(barrierXone, 1.1),
                   duration: Duration(milliseconds: 0),
                   child: MyBarrier(
@@ -124,6 +152,7 @@ class _GameState extends State<Game> {
                   ),
                 ),
                 AnimatedContainer(
+                  key: twotkey,
                   alignment: Alignment(barrierXtwo, -1.18),
                   duration: Duration(milliseconds: 0),
                   child: MyBarrier(
@@ -131,6 +160,7 @@ class _GameState extends State<Game> {
                   ),
                 ),
                 AnimatedContainer(
+                  key: twobkey,
                   alignment: Alignment(barrierXtwo, 1.1),
                   duration: Duration(milliseconds: 0),
                   child: MyBarrier(
@@ -138,6 +168,7 @@ class _GameState extends State<Game> {
                   ),
                 ),
                 AnimatedContainer(
+                  key: threetkey,
                   alignment: Alignment(barrierXthree, -1.18),
                   duration: Duration(milliseconds: 0),
                   child: MyBarrier(
@@ -145,6 +176,7 @@ class _GameState extends State<Game> {
                   ),
                 ),
                 AnimatedContainer(
+                  key: threebkey,
                   alignment: Alignment(barrierXthree, 1.1),
                   duration: Duration(milliseconds: 0),
                   child: MyBarrier(
@@ -152,6 +184,7 @@ class _GameState extends State<Game> {
                   ),
                 ),
                 AnimatedContainer(
+                  key: fourtkey,
                   alignment: Alignment(barrierXfour, -1.18),
                   duration: Duration(milliseconds: 0),
                   child: MyBarrier(
@@ -159,6 +192,7 @@ class _GameState extends State<Game> {
                   ),
                 ),
                 AnimatedContainer(
+                  key: fourbkey,
                   alignment: Alignment(barrierXfour, 1.1),
                   duration: Duration(milliseconds: 0),
                   child: MyBarrier(
@@ -174,6 +208,7 @@ class _GameState extends State<Game> {
             ),
             Expanded(
               child: Container(
+                // decoration: ,
                 color: Colors.green,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -186,7 +221,7 @@ class _GameState extends State<Game> {
                           style: TextStyle(fontSize: 25),
                         ),
                         Text(
-                          '0',
+                          '$score',
                           style: TextStyle(fontSize: 35),
                         )
                       ],
@@ -199,7 +234,7 @@ class _GameState extends State<Game> {
                           style: TextStyle(fontSize: 25),
                         ),
                         Text(
-                          '10',
+                          '$bestScore',
                           style: TextStyle(fontSize: 35),
                         )
                       ],
